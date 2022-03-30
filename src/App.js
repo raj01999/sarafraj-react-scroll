@@ -1,6 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
 import "./assets/css/style.css";
-import Image from "./components/Image";
+import ImageContainer from "./components/ImageContainer";
 
 export default function App() {
   return (
@@ -9,7 +8,7 @@ export default function App() {
         <div className="text-center">
           <div className="my-4">My Web</div>
         </div>
-        <Image />
+        <ImageContainer />
       </div>
     </section>
   );

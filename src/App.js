@@ -1,21 +1,16 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./assets/css/style.css";
+import Image from "./components/Image";
 
 export default function App() {
   return (
-    <div>
-      <div className="bg-gray-600 text-white p-5 border">raj</div>
-    </div>
+    <section className="flex justify-center">
+      <div className="w-10/12">
+        <div className="text-center">
+          <div className="my-4">My Web</div>
+        </div>
+        <Image />
+      </div>
+    </section>
   );
 }
-
-// export default class App extends React.Component {
-//   constructor() {
-//     super();
-//     this.state = { title: "Hi" };
-//   }
-
-//   render() {
-//     return <div>{this.state.title}</div>;
-//   }
-// }

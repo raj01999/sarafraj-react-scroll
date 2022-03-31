@@ -12,15 +12,15 @@ export default function Image({ img, idx, deleting }) {
       <div
         className="relative"
         onMouseOver={() => {
-          setIsHover(idx);
+          setIsHover(true);
         }}
         onMouseLeave={() => {
-          setIsHover(null);
+          setIsHover(false);
         }}
       >
         <i
           className={`fas fa-times absolute right-0 cursor-pointer opacity-50 hover:opacity-100 ${
-            isHover === idx ? "" : "hidden"
+            isHover ? "" : "hidden"
           }`}
           onClick={() => {
             deleting(idx);

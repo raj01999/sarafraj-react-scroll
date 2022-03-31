@@ -1,20 +1,21 @@
-import { useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import Images from "./Images";
+import useFetchImg from "../hooks/useFetchImg";
 
 export default function ImageContainer() {
-  // useState for image list - it will come from api
-  const [images, setImages] = useState([
-    "https://media.istockphoto.com/photos/cityscape-of-shinbashi-area-viewing-street-picture-id1302070873?b=1&k=20&m=1302070873&s=170667a&w=0&h=bYZAmbBvY1Bs7FOBwM60JbXFRfHTa5oE7JynMWY-hZE=",
-
-    "https://media.istockphoto.com/photos/yellow-with-orange-sunburst-background-picture-id1169942971?b=1&k=20&m=1169942971&s=170667a&w=0&h=q7NrkNRDCf9wtugfqrmTXN4o4HzNeuI3yVFSEzB66j0=",
-
-    "https://media.istockphoto.com/photos/manga-painter-picture-id157569595?b=1&k=20&m=157569595&s=170667a&w=0&h=XFiLySfAbYMbZYtIwjWEh7v-w1UPd9rkYGiSPscZ3_A=",
-
-    "https://media.istockphoto.com/photos/japanese-couple-as-manga-style-picture-id1153556065?b=1&k=20&m=1153556065&s=170667a&w=0&h=xmabnBKPpnWPmWXj9xErZmD-38kn6GzyNO07aJpFhWU=",
-  ]);
+  // using custom hook for api request
+  const [images, setImages] = useFetchImg();
 
   // useState for taking new image {Handle input box in return part in this page}
   const [newImg, setNewImg] = useState("");
+
+  // useRef for focusing on input box
+  const inputRef = useRef(null);
+
+  // componentDidMount on input box focusing
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
 
   // deleting the photo {Handle in Images/Image component}
   function deleting(idx) {
@@ -36,6 +37,7 @@ export default function ImageContainer() {
 
       <div className="flex justify-around my-5">
         <input
+          ref={inputRef}
           type="text"
           className="p-2 border border-gray-800 shadow rounded w-full"
           onChange={(event) => {

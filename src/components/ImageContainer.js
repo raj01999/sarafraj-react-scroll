@@ -1,60 +1,33 @@
-import { useRef, useState, useEffect } from "react";
+import { useState } from "react";
 import Images from "./Images";
 import useFetchImg from "../hooks/useFetchImg";
+import Loading from "./Loading";
 
-export default function ImageContainer() {
+export default function ImageContainer({ searchKey }) {
+  // page no for fetch api
+  const [page, setPage] = useState(1);
+
   // using custom hook for api request
-  const [images, setImages] = useFetchImg();
-
-  // useState for taking new image {Handle input box in return part in this page}
-  const [newImg, setNewImg] = useState("");
-
-  // useRef for focusing on input box
-  const inputRef = useRef(null);
-
-  // componentDidMount on input box focusing
-  useEffect(() => {
-    inputRef.current.focus();
-  }, []);
-
-  // deleting the photo {Handle in Images/Image component}
-  function deleting(idx) {
-    setImages([...images.slice(0, idx), ...images.slice(idx + 1)]);
-  }
-
-  // adding new image {Hndle in return part in this page}
-  function addImg() {
-    setImages([newImg, ...images]);
-    setNewImg("");
-  }
+  const [images, setImages, isLoading] = useFetchImg(page, searchKey);
 
   // Returning the main Jsx
   return (
     <section>
-      <div className="flex  justify-around flex-wrap">
-        <Images images={images} deleting={deleting} />
-      </div>
+      <Images
+        images={images}
+        setImages={setImages}
+        page={page}
+        setPage={setPage}
+      />
 
-      <div className="flex justify-around my-5">
-        <input
-          ref={inputRef}
-          type="text"
-          className="p-2 border border-gray-800 shadow rounded w-full"
-          onChange={(event) => {
-            setNewImg(event.target.value);
-          }}
-          value={newImg}
-        />
-        <button
-          className={`p-2 ${
-            newImg ? "bg-green-600" : "bg-gray-600"
-          } text-white rounded mx-3`}
-          onClick={addImg}
-          disabled={!newImg}
-        >
-          Add
-        </button>
-      </div>
+      <div
+        style={{
+          width: "90%",
+          display: "flex",
+          justifyContent: "end",
+        }}
+      ></div>
+      {isLoading && <Loading />}
     </section>
   );
 }

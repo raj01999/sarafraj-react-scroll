@@ -1,33 +1,37 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useLayoutEffect } from "react";
 
 const API = process.env.REACT_APP_ACCESS_API;
 const KEY = process.env.REACT_APP_ACCESS_KEY;
 
-export default function useFetchImg(page, searchKey) {
+export default function useFetchImg(page, searchKey, setPage) {
   // useState for image list - it will come from api
   const [images, setImages] = useState([]);
 
   // for loading moment on the page
   const [isLoading, setIsLoading] = useState(true);
 
-  // Fetching Data from Api {componentDidMount}
-  useEffect(() => {
-    setIsLoading(true);
-
+  // api request function
+  const fetchApi = (checker) => {
     fetch(
       `${API}search/photos?client_id=${KEY}&page=${page}&query=${searchKey}`
     )
       .then((resp) => {
+        // console.log(page, searchKey); // Remove
         return resp.json();
       })
 
       .then((data) => {
-        console.log(data); //remove
+        // console.log(data); //Remove
         try {
           const list = data.results.map((obj) => {
             return obj.urls.regular;
           });
-          setImages([...images, ...list]);
+
+          if (!checker) {
+            setImages([...images, ...list]);
+          } else {
+            setImages([...list]);
+          }
 
           setIsLoading(false);
         } catch {
@@ -49,7 +53,26 @@ export default function useFetchImg(page, searchKey) {
 
         setIsLoading(false);
       });
+  };
+
+  // Fetching Data from Api {on  page change}
+  useEffect(() => {
+    setIsLoading(true);
+    fetchApi();
   }, [page]);
+
+  // Fetching Data from Api {on search key change}
+  useLayoutEffect(() => {
+    if (page !== 1) {
+      setPage(1);
+      setImages([]);
+    } else {
+      if (searchKey !== "nature") {
+        const checker = true;
+        fetchApi(checker);
+      }
+    }
+  }, [searchKey]);
 
   return [images, setImages, isLoading];
 }

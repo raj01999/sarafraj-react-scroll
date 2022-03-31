@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Images from "./Images";
 import useFetchImg from "../hooks/useFetchImg";
 import Loading from "./Loading";
@@ -8,7 +8,7 @@ export default function ImageContainer({ searchKey }) {
   const [page, setPage] = useState(1);
 
   // using custom hook for api request
-  const [images, setImages, isLoading] = useFetchImg(page, searchKey);
+  const [images, setImages, isLoading] = useFetchImg(page, searchKey, setPage);
 
   // Returning the main Jsx
   return (
